@@ -71,6 +71,37 @@ using namespace std;
 		imshow("Thresholded Image", imgThresholded); //show the thresholded image
 		imshow("Original", imgOriginal); //show the original image
 
+
+		// Calculate the moments to estimate the position of the ball
+		Moments theMoments = moments(imgThresholded);
+
+		// The actual moment values
+		double moment10 = theMoments.m10;
+		double moment01 = theMoments.m01;
+
+		double area = theMoments.m00;
+
+		static int posX = 0;
+
+		static int posY = 0;
+
+		int lastX = posX;
+
+		int lastY = posY;
+
+		posX = moment10 / area;
+		posY = moment01 / area;
+
+		// Print it out for debugging purposes
+		printf("position (%d,%d)\n", posX, posY);
+
+
+		circle(imgThresholded, Point(posX, posY), 32.0, Scalar(0, 0, 255), 1, 8);
+
+		imshow("Thresholded Image", imgThresholded); //show the thresholded image
+		imshow("Original", imgOriginal); //show the original image
+
+
         if (waitKey(30) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
        {
             cout << "esc key is pressed by user" << endl;
@@ -80,3 +111,5 @@ using namespace std;
 
    return 0;
 }
+
+
